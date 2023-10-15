@@ -1,0 +1,47 @@
+<div class="return-section">
+  <button mat-raised-button color="accent" [routerLink]="['/']">Return to Main Page</button>
+</div>
+<div class="container">
+  <h1>Edit Project</h1>
+
+  <form class="project-form" #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <mat-form-field appearance="fill">
+      <mat-label>Project Name</mat-label>
+      <input matInput placeholder="Enter Project Name" [(ngModel)]="projectName" name="projectName" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Enter Project Description" [(ngModel)]="description"name="description"></textarea>
+    </mat-form-field>
+
+    <!-- Other project related fields can be placed here -->
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit">Update Project</button>
+      <button mat-raised-button color="warn" type="button" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+
+  <h2>Project Tasks</h2>
+  <div class="tasks-grid">
+    <!-- Tasks listing -->
+    <mat-grid-list cols="4" rowHeight="100px" gutterSize="10px">
+      <mat-grid-tile *ngFor="let task of tasks" class="task-tile">
+        <mat-card class="task-card">
+          <mat-card-title>{{ task.name }}</mat-card-title>
+          <!-- Other task details can be shown here -->
+        </mat-card>
+        <button mat-icon-button color="warn" aria-label="Delete task" (click)="onDeleteTask(task.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <!-- Button to add/edit task -->
+        <button mat-icon-button color="primary" aria-label="Add/Edit task" (click)="onAddEditTask(task)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <button mat-raised-button color="primary" (click)="onAddTask()">Add Task</button>
+  </div>
+</div>
+

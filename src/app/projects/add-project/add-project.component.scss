@@ -1,0 +1,25 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+h1 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.project-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.project-form mat-form-field {
+  width: 100%; /* Ensures form controls take up full width */
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}

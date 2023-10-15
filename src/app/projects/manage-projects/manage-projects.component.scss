@@ -1,0 +1,82 @@
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  font-family: 'Arial', sans-serif;
+}
+
+
+.container h1 {
+  color: #333;
+  text-transform: uppercase;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #3f51b5;
+  padding-bottom: 10px;
+}
+.projects-grid{
+  padding: 20px;
+}
+
+.project-tile {
+  position: relative;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 5px;
+}
+
+.project-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.project-card:hover {
+  background-color: #e0e0e0;
+}
+
+.project-card mat-card-title {
+  font-size: 1.2em;
+  color: #424242;
+}
+
+
+.project-tile button {
+  position: absolute;
+  top: 5px;
+}
+
+.project-tile button[aria-label="Delete project"] {
+  right: 45px;
+}
+
+.project-tile button[aria-label="View details"] {
+  right: 5px;
+}
+
+
+mat-icon {
+  font-size: 1.2em;
+  vertical-align: middle;
+}
+
+
+
+.project-tile button[aria-label="Delete project"] {
+  right: 85px;
+}
+
+.project-tile button[aria-label="View details"] {
+  right: 45px;
+}
+
+.project-tile button[aria-label="Edit project"] {
+  right: 5px;
+}
