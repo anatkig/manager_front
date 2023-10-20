@@ -12,6 +12,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-project.component.scss'],
 })
 export class AddProjectComponent {
+  public disableSubmit: boolean = false;
+  private usedNames: string[] = [];
   constructor(
     private router: Router,
     private projectService: ProjectService,
@@ -26,15 +28,26 @@ export class AddProjectComponent {
       description: value.description,
     };
 
-    this.projectService.addProject(newProject).subscribe(
-      (response) => {
-        this.toastr.success('Your project has been added successfully!');
-        this.router.navigate(['/']);
-      },
-      (error) => {
-        this.toastr.error(error.message);
-      }
-    );
+    this.disableSubmit = true;
+
+    if (!this.usedNames.includes(value.projectName)) {
+      this.projectService.addProject(newProject).subscribe(
+        (response) => {
+          this.toastr.success('Your project has been added successfully!');
+          this.router.navigate(['/']);
+          this.disableSubmit = false;
+        },
+        (error) => {
+          this.toastr.error(error.message);
+          this.disableSubmit = false;
+        }
+      );
+    } else {
+      this.toastr.warning(
+        'You have already created this Project. If you want to change it, use "edit" button'
+      );
+    }
+    this.usedNames.push(value.projectName);
   }
 
   onCancel() {

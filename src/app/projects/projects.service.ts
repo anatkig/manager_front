@@ -42,6 +42,16 @@ export class ProjectService {
     );
   }
 
+  editProject(project: Project): Observable<Project> {
+    return this.http
+      .put<Project>(`${this.apiUrl + 'Projects'}/${project.id}`, project)
+      .pipe(
+        tap(() => {
+          this.forceUpdate = true;
+        })
+      );
+  }
+
   deleteProject(id: string): Observable<Object> {
     const url = `${this.apiUrl + 'Projects'}/${id}`;
     return this.http.delete(url).pipe(

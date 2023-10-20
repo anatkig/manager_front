@@ -16,7 +16,7 @@
     </mat-form-field>
 
     <div class="form-actions">
-      <button mat-raised-button color="primary" type="submit">Save Project</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid&&!disableSubmit">Save Project</button>
       <button mat-raised-button color="warn" type="button" (click)="onCancel()">Cancel</button>
     </div>
   </form>

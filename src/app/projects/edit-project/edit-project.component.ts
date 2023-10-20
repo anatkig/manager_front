@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 export class EditProjectComponent implements OnInit {
   public projectName: string = '';
   public description: string = '';
+  public id: string = '';
   tasks: Task[] = []; // Initialize with your tasks data
 
   constructor(
@@ -32,6 +33,7 @@ export class EditProjectComponent implements OnInit {
         (project) => {
           this.projectName = project.name;
           this.description = project.description;
+          this.id = project.id;
         },
         (error) => {
           // Handle the error appropriately.
@@ -45,16 +47,17 @@ export class EditProjectComponent implements OnInit {
     const value = form.value;
     const newProject: Project = {
       name: value.projectName,
-      id: value.id,
       description: value.description,
+      id: this.id,
     };
 
-    this.projectService.addProject(newProject).subscribe(
+    this.projectService.editProject(newProject).subscribe(
       (response) => {
         this.toastr.success('Your project has been edited successfully!');
         this.router.navigate(['/']);
       },
       (error) => {
+        console.log(error);
         this.toastr.error(error.message);
       }
     );
