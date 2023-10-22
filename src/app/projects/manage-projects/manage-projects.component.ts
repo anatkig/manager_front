@@ -21,10 +21,10 @@ export class ManageProjectsComponent implements OnInit {
     });
   }
   onAddProject() {
-    this.router.navigate(['/add-project']);
+    this.router.navigate(['/add-project', 'project']);
   }
   onEditProject(projectId: string) {
-    this.router.navigate(['/edit-project', projectId]);
+    this.router.navigate(['/edit-project', 'project', projectId]);
   }
   onDeleteProject(projectId: string) {
     this.projectService
@@ -32,6 +32,6 @@ export class ManageProjectsComponent implements OnInit {
       .subscribe(() => this.fetchProjects());
   }
   onViewDetails(projectId: string) {
-    this.router.navigate(['/view-project', projectId]);
+    this.router.navigate(['/view-project', 'project', projectId]);
   }
 }

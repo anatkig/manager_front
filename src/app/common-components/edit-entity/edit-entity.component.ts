@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Task } from '../models/task.model';
+import { Task } from '../../projects/models/task.model';
 import { Router } from '@angular/router';
-import { Project } from '../models/project.model';
-import { ProjectService } from '../projects.service';
+import { Project } from '../../projects/models/project.model';
+import { ProjectService } from '../../projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-edit-project',
-  templateUrl: './edit-project.component.html',
-  styleUrls: ['./edit-project.component.scss'],
+  selector: 'app-edit-entity',
+  templateUrl: './edit-entity.component.html',
+  styleUrls: ['./edit-entity.component.scss'],
 })
-export class EditProjectComponent implements OnInit {
+export class EditEntityComponent implements OnInit {
   public projectName: string = '';
   public description: string = '';
   public id: string = '';
-  tasks: Task[] = []; // Initialize with your tasks data
+  tasks: Task[] = [];
+  public typeView: string = '';
 
   constructor(
     private router: Router,
@@ -27,6 +28,8 @@ export class EditProjectComponent implements OnInit {
 
   ngOnInit(): void {
     const projectId = this.route.snapshot.paramMap.get('id');
+    const type = this.route.snapshot.paramMap.get('type');
+    this.typeView = type === 'project' ? 'Project' : 'Task';
 
     if (projectId) {
       this.projectService.getProject(projectId).subscribe(
@@ -64,12 +67,11 @@ export class EditProjectComponent implements OnInit {
   }
 
   onCancel() {
-    // Navigate back to projects page without making any changes
     this.router.navigate(['/']);
   }
 
   onAddTask() {
-    // Handle task creation
+    this.router.navigate(['/add-task', 'task', this.id, this.projectName]);
   }
 
   onAddEditTask(task: any) {

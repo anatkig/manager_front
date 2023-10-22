@@ -1,15 +1,35 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddProjectComponent } from './projects/add-project/add-project.component';
+import { AddEntityComponent } from './common-components/add-entity/add-entity.component';
 import { ManageProjectsComponent } from './projects/manage-projects/manage-projects.component';
-import { EditProjectComponent } from './projects/edit-project/edit-project.component';
-import { ViewProjectComponent } from './projects/view-project/view-project.component';
+import { EditEntityComponent } from './common-components/edit-entity/edit-entity.component';
+import { ViewEntityComponent } from './common-components/view-entity/view-entity.component';
+import { ManageTasksComponent } from './tasks/manage-tasks/manage-tasks.component';
 
 const routes: Routes = [
-  { path: '', component: ManageProjectsComponent },
-  { path: 'add-project', component: AddProjectComponent },
-  { path: 'edit-project/:id', component: EditProjectComponent },
-  { path: 'view-project/:id', component: ViewProjectComponent },
+  {
+    path: '',
+    redirectTo: 'manage-projects',
+    pathMatch: 'full',
+  },
+  {
+    path: 'manage-projects',
+    component: ManageProjectsComponent,
+  },
+  { path: 'manage-tasks', component: ManageTasksComponent },
+  { path: 'add-project/:type', component: AddEntityComponent },
+  {
+    path: 'add-task/:type/:projectId/:projectName',
+    component: AddEntityComponent,
+  },
+  {
+    path: 'add-task/:type',
+    component: AddEntityComponent,
+  },
+  { path: 'edit-project/:type/:id', component: EditEntityComponent },
+  { path: 'edit-task/:type/:id', component: EditEntityComponent },
+  { path: 'view-project/:type/:id', component: ViewEntityComponent },
+  { path: 'view-task/:type/:id', component: ViewEntityComponent },
 ];
 
 @NgModule({

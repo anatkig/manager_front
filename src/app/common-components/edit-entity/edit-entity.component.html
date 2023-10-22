@@ -23,6 +23,7 @@
     </div>
   </form>
 
+<div *ngIf="typeView==='Project'">
   <h2>Project Tasks</h2>
   <div class="tasks-grid">
     <!-- Tasks listing -->
@@ -43,5 +44,6 @@
     </mat-grid-list>
     <button mat-raised-button color="primary" (click)="onAddTask()">Add Task</button>
   </div>
+</div>
 </div>
 

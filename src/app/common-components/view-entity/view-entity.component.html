@@ -2,28 +2,28 @@
   <button mat-raised-button color="accent" [routerLink]="['/']">Return to Main Page</button>
 </div>
 <div class="container">
-  <h1>View Project</h1>
+  <h1>View {{typeView}}</h1>
 
   <div class="project-details">
-    <h2>Project Name:</h2>
-    <p>{{ projectName }}</p> <!-- display the project name -->
+    <h2>{{typeView}} Name:</h2>
+    <p>{{ entityName }}</p> <!-- display the project name -->
 
     <h2>Description:</h2>
     <p>{{ description }}</p> <!-- display the project description -->
 
-    <!-- Other project related fields can be displayed here -->
   </div>
 
+<div *ngIf="typeView === 'Project'">
   <h2>Project Tasks</h2>
   <div class="tasks-grid">
     <!-- Tasks listing -->
-    <mat-grid-list cols="4" rowHeight="100px" gutterSize="10px">
+    <mat-grid-list cols="4" rowHeight="70px" gutterSize="10px">
       <mat-grid-tile *ngFor="let task of tasks" class="task-tile">
-        <mat-card class="task-card">
+        <mat-card class="task-card" (click)="onSelectTask(task.id)">
           <mat-card-title>{{ task.name }}</mat-card-title>
-          <!-- Other task details can be shown here -->
         </mat-card>
       </mat-grid-tile>
     </mat-grid-list>
   </div>
+</div>
 </div>
