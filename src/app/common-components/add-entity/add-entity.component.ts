@@ -25,6 +25,7 @@ export class AddEntityComponent implements OnInit {
   public entityName: string = '';
   public entityDescription: string = '';
   public projects: Project[] = [];
+  public selectedProject: string = '';
   constructor(
     private router: Router,
     private projectService: ProjectService,

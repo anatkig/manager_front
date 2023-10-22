@@ -16,7 +16,11 @@
     </mat-form-field>
     <mat-form-field appearance="fill" *ngIf="typeView==='Task'">
       <mat-label>Project Name</mat-label>
-      <textarea matInput placeholder="Enter Project Name" [(ngModel)]="projectName" name="projectName"></textarea>
+      <mat-select [(ngModel)]="selectedProject" name="project">
+        <mat-option *ngFor="let project of projects" [value]="project.id">
+          {{project.name}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <button mat-raised-button color="accent" (click)="openAddTaskDialog()" *ngIf="typeView === 'Project'">Add a Task</button>
     <div class="form-actions">

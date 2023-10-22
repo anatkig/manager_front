@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, tap } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 export interface Task {
@@ -15,6 +15,10 @@ export interface Task {
 })
 export class TaskService {
   private apiURL = 'https://managerback.azurewebsites.net/Tasks';
+  private tasksSubject = new BehaviorSubject<Task[]>([]);
+  public tasks$ = this.tasksSubject.asObservable();
+  private tasksLoaded = false;
+  private forceUpdate = false;
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -38,13 +42,23 @@ export class TaskService {
     return throwError(errorMessage);
   }
 
-  // Get all tasks
   getTasks(): Observable<Task[]> {
-    return this.http
-      .get<Task[]>(this.apiURL)
-      .pipe(retry(1), catchError(this.handleError));
+    if (!this.tasksLoaded || this.forceUpdate) {
+      return this.http.get<Task[]>(this.apiURL).pipe(
+        tap((tasks) => {
+          this.tasksSubject.next(tasks);
+          this.tasksLoaded = true;
+          this.forceUpdate = false;
+        }),
+        retry(1),
+        catchError(this.handleError) // Make sure you have a handleError function defined
+      );
+    } else {
+      return this.tasksSubject.asObservable();
+    }
   }
-  // Get all tasks
+
+  // Get all tasks by projectId
   getTasksByProjectId(projectId: string): Observable<Task[]> {
     const params = new HttpParams().set('projectId', projectId);
     const urlWithSegment = `${this.apiURL}/byproject`;

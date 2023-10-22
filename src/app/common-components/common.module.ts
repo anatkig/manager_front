@@ -10,11 +10,13 @@ import { AddEntityComponent } from './add-entity/add-entity.component';
 import { EditEntityComponent } from './edit-entity/edit-entity.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [ViewEntityComponent, AddEntityComponent, EditEntityComponent],
@@ -32,6 +34,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     FormsModule,
     MatButtonModule,
+    MatOptionModule,
+    MatSelectModule,
+    ReactiveFormsModule,
   ],
   exports: [AddEntityComponent, ViewEntityComponent, EditEntityComponent],
 })

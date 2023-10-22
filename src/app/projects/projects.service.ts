@@ -8,7 +8,7 @@ import { Project } from './models/project.model';
   providedIn: 'root',
 })
 export class ProjectService {
-  private apiUrl = 'https://managerback.azurewebsites.net/';
+  private apiUrl = 'https://managerback.azurewebsites.net/Projects/';
   private projectsSubject = new BehaviorSubject<Project[]>([]);
   public projects$ = this.projectsSubject.asObservable();
   private projectsLoaded = false;
@@ -18,7 +18,7 @@ export class ProjectService {
   getProjects(): Observable<Project[]> {
     if (!this.projectsLoaded || this.forceUpdate) {
       // If projects aren't loaded, fetch from the API.
-      return this.http.get<Project[]>(this.apiUrl + 'Projects').pipe(
+      return this.http.get<Project[]>(this.apiUrl).pipe(
         tap((projects) => {
           // Utilize tap to capture the response without altering it.
           this.projectsSubject.next(projects);
@@ -32,10 +32,10 @@ export class ProjectService {
     }
   }
   getProject(id: string): Observable<Project> {
-    return this.http.get<Project>(`${this.apiUrl + 'Projects'}/${id}`);
+    return this.http.get<Project>(`${this.apiUrl}/${id}`);
   }
   addProject(newProject: Project): Observable<Project> {
-    return this.http.post<Project>(this.apiUrl + 'Projects', newProject).pipe(
+    return this.http.post<Project>(this.apiUrl, newProject).pipe(
       tap(() => {
         this.forceUpdate = true;
       })
@@ -43,17 +43,15 @@ export class ProjectService {
   }
 
   editProject(project: Project): Observable<Project> {
-    return this.http
-      .put<Project>(`${this.apiUrl + 'Projects'}/${project.id}`, project)
-      .pipe(
-        tap(() => {
-          this.forceUpdate = true;
-        })
-      );
+    return this.http.put<Project>(`${this.apiUrl}/${project.id}`, project).pipe(
+      tap(() => {
+        this.forceUpdate = true;
+      })
+    );
   }
 
   deleteProject(id: string): Observable<Object> {
-    const url = `${this.apiUrl + 'Projects'}/${id}`;
+    const url = `${this.apiUrl}/${id}`;
     return this.http.delete(url).pipe(
       tap(() => {
         this.forceUpdate = true;
