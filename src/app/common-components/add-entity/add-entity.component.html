@@ -14,15 +14,33 @@
       <mat-label>Description</mat-label>
       <textarea matInput placeholder="Enter {{typeView}} Description" [(ngModel)]="entityDescription" name="description"></textarea>
     </mat-form-field>
+    <div *ngIf="typeView === 'Project'">
+
+      <mat-form-field appearance="fill" *ngIf="typeView === 'Project'">
+        <mat-label>Complexity</mat-label>
+        <mat-select id="complexity" [(ngModel)]="entityComplexity" name="entityComplexity" required>
+          <mat-option value="" disabled>Select Complexity</mat-option>
+          <mat-option *ngFor="let complexity of Complexity | keyvalue" [value]="complexity.key">
+            {{complexity.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" *ngIf="typeView === 'Project'">
+        <mat-label>Code</mat-label>
+        <input matInput id="code" placeholder="Enter Code" [(ngModel)]="entityCode" name="entityCode" required>
+      </mat-form-field>
+
+
+    </div>
     <mat-form-field appearance="fill" *ngIf="typeView==='Task'">
       <mat-label>Project Name</mat-label>
-      <mat-select [(ngModel)]="selectedProject" name="project">
+      <mat-select [(ngModel)]="selectedProject" name="projectId">
         <mat-option *ngFor="let project of projects" [value]="project.id">
           {{project.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button color="accent" (click)="openAddTaskDialog()" *ngIf="typeView === 'Project'">Add a Task</button>
     <div class="form-actions">
       <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid&&!disableSubmit">Save {{typeView}}</button>
       <button mat-raised-button color="warn" type="button" (click)="onCancel()">Cancel</button>

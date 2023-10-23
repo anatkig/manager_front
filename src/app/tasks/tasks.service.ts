@@ -75,9 +75,11 @@ export class TaskService {
 
   // Create a new task
   addTask(task: Task): Observable<Task> {
-    return this.http
-      .post<Task>(this.apiURL, task)
-      .pipe(catchError(this.handleError));
+    return this.http.post<Task>(this.apiURL, task).pipe(
+      tap(() => {
+        this.forceUpdate = true;
+      })
+    );
   }
 
   // Update a task
@@ -88,9 +90,12 @@ export class TaskService {
   }
 
   // Delete a task
-  deleteTask(id: string): Observable<any> {
-    return this.http
-      .delete<Task>(`${this.apiURL}/${id}`, this.httpOptions)
-      .pipe(catchError(this.handleError));
+  deleteTask(id: string): Observable<Object> {
+    const url = `${this.apiURL}/${id}`;
+    return this.http.delete(url).pipe(
+      tap(() => {
+        this.forceUpdate = true;
+      })
+    );
   }
 }

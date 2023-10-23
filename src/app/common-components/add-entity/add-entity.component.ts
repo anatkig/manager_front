@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TaskFormComponent } from 'src/app/tasks/task-form/task-form.component';
 import { ActivatedRoute } from '@angular/router';
 import { Task } from 'src/app/projects/models/task.model';
+import { Complexity } from 'src/app/shared/complexity.enum';
 
 @Component({
   selector: 'app-add-entity',
@@ -23,9 +24,13 @@ export class AddEntityComponent implements OnInit {
   public projectId: string = '';
   public projectName: string = '';
   public entityName: string = '';
+  public entityComplexity: string = '';
+  public entityCode: string = '';
   public entityDescription: string = '';
   public projects: Project[] = [];
+  public tasks: Task[] = [];
   public selectedProject: string = '';
+  public Complexity = Complexity;
   constructor(
     private router: Router,
     private projectService: ProjectService,
@@ -51,6 +56,11 @@ export class AddEntityComponent implements OnInit {
       this.projects = projects;
     });
   }
+  fetchTasks() {
+    this.taskService.getTasks().subscribe((tasks) => {
+      this.tasks = tasks;
+    });
+  }
   openAddTaskDialog(): void {
     const dialogRef = this.dialog.open(TaskFormComponent, {
       width: '250px',
@@ -69,6 +79,8 @@ export class AddEntityComponent implements OnInit {
       name: value.entityName,
       id: uuidv4(),
       description: value.description,
+      complexity: value.entityComplexity,
+      code: value.entityCode,
     };
 
     this.disableSubmit = true;
@@ -79,6 +91,7 @@ export class AddEntityComponent implements OnInit {
           this.toastr.success('Your project has been added successfully!');
           this.router.navigate(['/']);
           this.disableSubmit = false;
+          this.fetchProjects();
         },
         (error) => {
           this.toastr.error(error.message);
@@ -95,17 +108,11 @@ export class AddEntityComponent implements OnInit {
 
   addNewTask(form: NgForm) {
     const value = form.value;
-
-    const chosenProject = this.projects?.find(
-      (project) => project.name === this.projectName
-    );
-    const chosenProjectId = chosenProject?.id;
-
     const newTask: Task = {
       name: value.entityName,
       id: uuidv4(),
       description: value.description,
-      projectId: this.projectId || chosenProjectId || '',
+      projectId: value.projectId,
     };
 
     this.disableSubmit = true;
@@ -115,8 +122,9 @@ export class AddEntityComponent implements OnInit {
         (response) => {
           this.toastr.success('Your task has been added successfully!');
 
-          this.router.navigate(['/tasks']);
+          this.router.navigate(['/manage-tasks']);
           this.disableSubmit = false;
+          this.fetchTasks();
         },
         (error) => {
           this.toastr.error(error.message);

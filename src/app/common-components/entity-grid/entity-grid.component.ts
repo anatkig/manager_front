@@ -76,7 +76,6 @@ export class EntityGridComponent implements AfterViewInit {
 
   calculateNumberOfTiles() {
     const width = this.gridContainer.nativeElement.clientWidth;
-    console.log(width);
     if (width > 1200) {
       this.numberOfTiles = 4;
     } else if (width > 900) {

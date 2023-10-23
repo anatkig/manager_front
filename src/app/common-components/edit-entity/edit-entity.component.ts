@@ -86,6 +86,8 @@ export class EditEntityComponent implements OnInit {
       name: value.entityName,
       description: value.description,
       id: this.id,
+      complexity: value.complexity,
+      code: value.code,
     };
     this.projectService.editProject(newProject).subscribe(
       (response) => {
