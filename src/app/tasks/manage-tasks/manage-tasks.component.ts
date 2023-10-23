@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 // Import your Task service
 import { TaskService } from '../tasks.service';
+import { Task } from 'src/app/projects/models/task.model';
 
 @Component({
   selector: 'app-manage-tasks',
@@ -9,7 +10,7 @@ import { TaskService } from '../tasks.service';
   styleUrls: ['./manage-tasks.component.scss'], // refer to your actual CSS file here
 })
 export class ManageTasksComponent implements OnInit {
-  tasks: any[] = [];
+  tasks: Task[] = [];
 
   constructor(private router: Router, private taskService: TaskService) {}
 
@@ -27,20 +28,16 @@ export class ManageTasksComponent implements OnInit {
   }
 
   onViewDetails(taskId: string) {
-    // Navigate to task details page
     this.router.navigate(['/view-task', 'task', taskId]);
   }
 
   onDeleteTask(taskId: string) {
-    // Call the task service to delete the task.
-    // After deletion, you may want to fetch the task list again to refresh the list.
     this.taskService.deleteTask(taskId).subscribe(() => {
-      this.fetchTasks(); // re-fetch the list of tasks
+      this.fetchTasks();
     });
   }
 
   onEditTask(taskId: string) {
-    // Navigate to edit task page
     this.router.navigate(['/edit-task', 'task', taskId]);
   }
 }

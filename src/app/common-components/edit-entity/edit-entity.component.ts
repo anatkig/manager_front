@@ -1,11 +1,12 @@
+import { Task } from './../../projects/models/task.model';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Task } from '../../projects/models/task.model';
 import { Router } from '@angular/router';
 import { Project } from '../../projects/models/project.model';
 import { ProjectService } from '../../projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { TaskService } from 'src/app/tasks/tasks.service';
 
 @Component({
   selector: 'app-edit-entity',
@@ -13,33 +14,58 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./edit-entity.component.scss'],
 })
 export class EditEntityComponent implements OnInit {
-  public projectName: string = '';
+  public entityName: string = '';
   public description: string = '';
   public id: string = '';
-  tasks: Task[] = [];
+  public tasks: Task[] = [];
   public typeView: string = '';
 
   constructor(
     private router: Router,
     private projectService: ProjectService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private taskService: TaskService
   ) {}
 
   ngOnInit(): void {
-    const projectId = this.route.snapshot.paramMap.get('id');
+    const entityId = this.route.snapshot.paramMap.get('id');
     const type = this.route.snapshot.paramMap.get('type');
     this.typeView = type === 'project' ? 'Project' : 'Task';
+    if (entityId) this.id = entityId;
 
-    if (projectId) {
-      this.projectService.getProject(projectId).subscribe(
+    if (type === 'project' && entityId) this.fetchTasks(entityId);
+
+    if (type === 'project' && entityId) {
+      this.getProject(entityId);
+    } else if (entityId) {
+      this.getTask(entityId);
+    }
+  }
+
+  getProject(id: string) {
+    if (id) {
+      this.projectService.getProject(id).subscribe(
         (project) => {
-          this.projectName = project.name;
+          this.entityName = project.name;
           this.description = project.description;
           this.id = project.id;
         },
         (error) => {
-          // Handle the error appropriately.
+          console.error('An error occurred fetching the project data', error);
+        }
+      );
+    }
+  }
+  getTask(id: string) {
+    if (id) {
+      this.taskService.getTask(id).subscribe(
+        (project) => {
+          this.entityName = project.name;
+          this.description = project.description;
+          this.id = project.id;
+        },
+        (error) => {
           console.error('An error occurred fetching the project data', error);
         }
       );
@@ -47,16 +73,43 @@ export class EditEntityComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    if (this.typeView === 'Project') {
+      this.editProject(form);
+    } else {
+      this.editTask(form);
+    }
+  }
+
+  editProject(form: NgForm) {
     const value = form.value;
     const newProject: Project = {
-      name: value.projectName,
+      name: value.entityName,
       description: value.description,
       id: this.id,
     };
-
     this.projectService.editProject(newProject).subscribe(
       (response) => {
         this.toastr.success('Your project has been edited successfully!');
+        this.router.navigate(['/']);
+      },
+      (error) => {
+        console.log(error);
+        this.toastr.error(error.message);
+      }
+    );
+  }
+
+  editTask(form: NgForm) {
+    const value = form.value;
+    const updatedTask: Task = {
+      name: value.entityName,
+      description: value.description,
+      id: this.id,
+      projectId: value.projectId,
+    };
+    this.taskService.editTask(updatedTask.id, updatedTask).subscribe(
+      (response) => {
+        this.toastr.success('Your task has been edited successfully!');
         this.router.navigate(['/']);
       },
       (error) => {
@@ -71,15 +124,25 @@ export class EditEntityComponent implements OnInit {
   }
 
   onAddTask() {
-    this.router.navigate(['/add-task', 'task', this.id, this.projectName]);
+    this.router.navigate(['/add-task', 'task', this.id, this.entityName]);
+  }
+  onViewDetails(taskId: string) {
+    this.router.navigate(['/view-task', 'task', taskId]);
+  }
+  onEditTask(taskId: string) {
+    this.router.navigate(['/edit-task', 'task', taskId]);
+  }
+  fetchTasks(projectId: string) {
+    this.taskService
+      .getTasksByProjectId(projectId)
+      .subscribe((data: Task[]) => {
+        this.tasks = data;
+      });
   }
 
-  onAddEditTask(task: any) {
-    // Handle task editing
-    // If task is null, it means it's a new task
-  }
-
-  onDeleteTask(taskId: string) {
-    // Handle task deletion
+  onDeleteTask(taskId: string, projectId: string) {
+    this.taskService.deleteTask(taskId).subscribe(() => {
+      this.fetchTasks(projectId);
+    });
   }
 }

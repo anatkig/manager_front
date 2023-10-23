@@ -1,25 +1,6 @@
 <div class="projects-container">
 
-
   <button mat-raised-button color="primary" (click)="onAddProject()">Add Project</button>
 
-  <div class="projects-grid">
-    <!-- Projects listing -->
-    <mat-grid-list cols="3" rowHeight="90px" gutterSize="10px">
-      <mat-grid-tile *ngFor="let project of projects" class="project-tile" >
-        <mat-card class="project-card" (click)="onViewDetails(project.id)">
-          <mat-card-title>{{ project.name }}</mat-card-title>
-        </mat-card>
-        <button mat-icon-button color="warn" aria-label="Delete project" (click)="onDeleteProject(project.id)" matTooltip="Delete the Project">
-          <mat-icon  >delete</mat-icon>
-        </button>
-        <button mat-icon-button color="accent" aria-label="View details"  (click)="onViewDetails(project.id)" matTooltip="View Project Details">
-          <mat-icon>visibility</mat-icon>
-        </button>
-        <button mat-icon-button color="primary" aria-label="Edit project" (click)="onEditProject(project.id)" matTooltip="Edit Project">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </div>
+  <app-entity-grid [entityType]="'project'" [entities]="projects"></app-entity-grid>
 </div>

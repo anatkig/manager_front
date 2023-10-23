@@ -81,9 +81,9 @@ export class TaskService {
   }
 
   // Update a task
-  updateTask(id: string, task: Task): Observable<Task> {
+  editTask(id: string, task: Task): Observable<Task> {
     return this.http
-      .put<Task>(`${this.apiURL}/${id}`, JSON.stringify(task), this.httpOptions)
+      .put<Task>(`${this.apiURL}/${id}`, task)
       .pipe(catchError(this.handleError));
   }
 

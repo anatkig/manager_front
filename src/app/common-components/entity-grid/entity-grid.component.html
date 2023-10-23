@@ -1,0 +1,18 @@
+<div class="entities-grid" #gridContainer>
+  <mat-grid-list [cols]="numberOfTiles" rowHeight="100px" gutterSize="10px" >
+    <mat-grid-tile *ngFor="let entity of entities" class="entity-tile">
+      <mat-card class="entity-card" (click)="onEditEntity(entity.id,entityType)">
+        <mat-card-title>{{ entity.name }}</mat-card-title>
+      </mat-card>
+      <button mat-icon-button color="warn" aria-label="Delete entity" (click)="onDeleteEntity(entity.id,entityType)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" aria-label="View details" (click)="onViewDetails(entity.id,entityType)" matTooltip="View Entity Details">
+        <mat-icon>visibility</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" aria-label="Edit entity" (click)="onEditEntity(entity.id,entityType)" matTooltip="Edit Entity">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

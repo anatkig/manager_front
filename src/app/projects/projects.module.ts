@@ -12,6 +12,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from '../app-routing.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CommonComponentsModule } from '../common-components/common.module';
 
 @NgModule({
   declarations: [ManageProjectsComponent],
@@ -28,6 +29,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     BrowserModule,
     AppRoutingModule,
     MatDialogModule,
+    CommonComponentsModule,
   ],
   exports: [ManageProjectsComponent],
 })

@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from '../app-routing.module';
+import { CommonComponentsModule } from '../common-components/common.module';
 
 @NgModule({
   declarations: [ManageTasksComponent, TaskFormComponent],
@@ -25,6 +26,7 @@ import { AppRoutingModule } from '../app-routing.module';
     MatInputModule,
     BrowserModule,
     AppRoutingModule,
+    CommonComponentsModule,
   ],
   exports: [TaskFormComponent],
 })

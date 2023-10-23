@@ -17,9 +17,15 @@ import { MatOptionModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { EntityGridComponent } from './entity-grid/entity-grid.component';
 
 @NgModule({
-  declarations: [ViewEntityComponent, AddEntityComponent, EditEntityComponent],
+  declarations: [
+    ViewEntityComponent,
+    AddEntityComponent,
+    EditEntityComponent,
+    EntityGridComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -38,6 +44,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSelectModule,
     ReactiveFormsModule,
   ],
-  exports: [AddEntityComponent, ViewEntityComponent, EditEntityComponent],
+  exports: [
+    AddEntityComponent,
+    ViewEntityComponent,
+    EditEntityComponent,
+    EntityGridComponent,
+  ],
 })
 export class CommonComponentsModule {}
