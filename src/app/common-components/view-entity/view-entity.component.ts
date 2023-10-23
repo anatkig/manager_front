@@ -13,6 +13,10 @@ import { Router } from '@angular/router';
 export class ViewEntityComponent implements OnInit {
   public entityName: string = '';
   public description: string = '';
+  public complexity: string = '';
+  public code: string = '';
+  public id: string = '';
+  public parentProjectId: string = '';
   public typeView: string = '';
   public tasks: Task[] = [];
 
@@ -37,9 +41,12 @@ export class ViewEntityComponent implements OnInit {
   fetchEntity(id: string, type: string) {
     if (type === 'project') {
       this.projectService.getProject(id).subscribe(
-        (entity) => {
-          this.entityName = entity.name;
-          this.description = entity.description;
+        (project) => {
+          this.entityName = project.name;
+          this.description = project.description;
+          this.complexity = project.complexity;
+          this.code = project.code;
+          this.id = project.id;
         },
         (error) => {
           console.error('An error occurred fetching the project data', error);
@@ -50,6 +57,8 @@ export class ViewEntityComponent implements OnInit {
         (task) => {
           this.entityName = task.name;
           this.description = task.description;
+          this.parentProjectId = task.projectId;
+          this.id = task.id;
         },
         (error) => {
           console.error('An error occurred fetching the project data', error);

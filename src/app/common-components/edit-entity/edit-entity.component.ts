@@ -1,3 +1,4 @@
+import { Complexity } from './../../shared/complexity.enum';
 import { Task } from './../../projects/models/task.model';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -17,7 +18,13 @@ export class EditEntityComponent implements OnInit {
   public entityName: string = '';
   public description: string = '';
   public id: string = '';
+  public entityComplexity: string = '';
+  public entityCode: string = '';
+  public Complexity = Complexity;
+  public parentProjectId: string = '';
   public tasks: Task[] = [];
+  public projects: Project[] = [];
+  public selectedProject: string = '';
   public typeView: string = '';
 
   constructor(
@@ -40,6 +47,7 @@ export class EditEntityComponent implements OnInit {
       this.getProject(entityId);
     } else if (entityId) {
       this.getTask(entityId);
+      this.fetchProjects();
     }
   }
 
@@ -50,6 +58,8 @@ export class EditEntityComponent implements OnInit {
           this.entityName = project.name;
           this.description = project.description;
           this.id = project.id;
+          this.entityCode = project.code;
+          this.entityComplexity = project.complexity;
         },
         (error) => {
           console.error('An error occurred fetching the project data', error);
@@ -64,6 +74,8 @@ export class EditEntityComponent implements OnInit {
           this.entityName = project.name;
           this.description = project.description;
           this.id = project.id;
+          this.parentProjectId = project.projectId;
+          this.selectedProject = project.projectId;
         },
         (error) => {
           console.error('An error occurred fetching the project data', error);
@@ -141,7 +153,11 @@ export class EditEntityComponent implements OnInit {
         this.tasks = data;
       });
   }
-
+  fetchProjects() {
+    this.projectService.getProjects().subscribe((projects) => {
+      this.projects = projects;
+    });
+  }
   onDeleteTask(taskId: string, projectId: string) {
     this.taskService.deleteTask(taskId).subscribe(() => {
       this.fetchTasks(projectId);

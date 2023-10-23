@@ -1,17 +1,32 @@
 <div class="return-section">
   <button mat-raised-button color="accent" [routerLink]="['/']">Return to Main Page</button>
 </div>
-<div class="container">
-  <h1>View {{typeView}}</h1>
+  <div class="container">
+    <h1>View {{typeView}}</h1>
 
-  <div class="project-details">
-    <h2>{{typeView}} Name:</h2>
-    <p>{{ entityName }}</p> <!-- display the project name -->
+    <div class="entity-details">
 
-    <h2>Description:</h2>
-    <p>{{ description }}</p> <!-- display the project description -->
+      <h2>Id:</h2>
+      <p>{{ id }}</p>
 
-  </div>
+      <h2>{{typeView}} Name:</h2>
+      <p>{{ entityName }}</p>
+
+      <h2>Description:</h2>
+      <p>{{ description }}</p>
+
+      <div *ngIf="typeView === 'Project'">
+        <h2>Complexity:</h2>
+        <p>{{ complexity }}</p>
+
+        <h2>Code:</h2>
+        <p>{{ code }}</p>
+      </div>
+      <div *ngIf="typeView === 'Task'">
+        <h2>ProjectId:</h2>
+        <p>{{ parentProjectId }}</p>
+      </div>
+    </div>
 
 <div *ngIf="typeView === 'Project'">
   <h2>Project Tasks</h2>
