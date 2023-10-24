@@ -7,6 +7,7 @@ import { Project } from 'src/app/projects/models/project.model';
 import { AfterViewInit } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-entity-grid',
@@ -29,7 +30,8 @@ export class EntityGridComponent implements AfterViewInit {
     private router: Router,
     private taskService: TaskService,
     private projectService: ProjectService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService
   ) {}
 
   ngAfterViewInit() {
@@ -47,13 +49,27 @@ export class EntityGridComponent implements AfterViewInit {
 
   onDeleteEntity(entityId: string, type: string) {
     if (type === 'project') {
-      this.projectService
-        .deleteProject(entityId)
-        .subscribe(() => this.fetchEntities(type));
+      this.projectService.deleteProject(entityId).subscribe({
+        next: () => {
+          this.fetchEntities(type);
+          this.toastr.success('Your project has been deleted successfully!');
+        },
+        error: (error) => {
+          this.toastr.error('There was an error deleting the project.');
+          console.error(error);
+        },
+      });
     } else {
-      this.taskService
-        .deleteTask(entityId)
-        .subscribe(() => this.fetchEntities(type));
+      this.taskService.deleteTask(entityId).subscribe({
+        next: () => {
+          this.fetchEntities(type);
+          this.toastr.success('Your task has been deleted successfully!');
+        },
+        error: (error) => {
+          this.toastr.error('There was an error deleting the task.');
+          console.error(error);
+        },
+      });
     }
   }
 

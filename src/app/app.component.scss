@@ -26,7 +26,12 @@
   .spacer {
     flex: 1;
   }
-
+.title{
+  font-size: 22;
+  color:rgb(244, 67, 54);
+  font-weight: 900;
+  padding:20px;
+}
   .container {
     display: flex;
     justify-content: center;

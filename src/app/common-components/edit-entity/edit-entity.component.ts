@@ -1,6 +1,8 @@
 import { Complexity } from './../../shared/complexity.enum';
 import { Task } from './../../projects/models/task.model';
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Project } from '../../projects/models/project.model';
@@ -26,6 +28,8 @@ export class EditEntityComponent implements OnInit {
   public projects: Project[] = [];
   public selectedProject: string = '';
   public typeView: string = '';
+  public entityId: string = '';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -36,51 +40,67 @@ export class EditEntityComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const entityId = this.route.snapshot.paramMap.get('id');
-    const type = this.route.snapshot.paramMap.get('type');
-    this.typeView = type === 'project' ? 'Project' : 'Task';
-    if (entityId) this.id = entityId;
+    this.route.paramMap?.subscribe((params) => {
+      const entityId = params.get('id');
+      const type = params.get('type');
 
-    if (type === 'project' && entityId) this.fetchTasks(entityId);
+      this.typeView = type === 'project' ? 'Project' : 'Task';
+      if (entityId) this.id = entityId;
 
-    if (type === 'project' && entityId) {
-      this.getProject(entityId);
-    } else if (entityId) {
-      this.getTask(entityId);
-      this.fetchProjects();
-    }
+      if (type === 'project' && entityId) this.fetchTasks(entityId);
+
+      if (type === 'project' && entityId) {
+        this.getProject(entityId);
+      } else if (entityId) {
+        this.getTask(entityId);
+        this.fetchProjects();
+      }
+    });
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getProject(id: string) {
     if (id) {
-      this.projectService.getProject(id).subscribe(
-        (project) => {
+      this.projectService.getProject(id).subscribe({
+        next: (project) => {
           this.entityName = project.name;
           this.description = project.description;
           this.id = project.id;
           this.entityCode = project.code;
           this.entityComplexity = project.complexity;
         },
-        (error) => {
+        error: (error) => {
           console.error('An error occurred fetching the project data', error);
-        }
-      );
+          this.toastr.error(
+            'There was an issue fetching the project data. Please try again later.'
+          );
+        },
+      });
     }
   }
-  getTask(id: string) {
+  getTask(id: string): void {
     if (id) {
-      this.taskService.getTask(id).subscribe(
-        (project) => {
-          this.entityName = project.name;
-          this.description = project.description;
-          this.id = project.id;
-          this.parentProjectId = project.projectId;
-          this.selectedProject = project.projectId;
-        },
-        (error) => {
-          console.error('An error occurred fetching the project data', error);
-        }
-      );
+      this.taskService
+        .getTask(id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (project) => {
+            this.entityName = project.name;
+            this.description = project.description;
+            this.id = project.id;
+            this.parentProjectId = project.projectId;
+            this.selectedProject = project.projectId;
+          },
+          error: (error) => {
+            console.error('An error occurred fetching the task data', error);
+            this.toastr.error(
+              'There was an issue fetching the task data. Please try again later.'
+            );
+          },
+        });
     }
   }
 
@@ -101,16 +121,16 @@ export class EditEntityComponent implements OnInit {
       complexity: value.complexity,
       code: value.code,
     };
-    this.projectService.editProject(newProject).subscribe(
-      (response) => {
+    this.projectService.editProject(newProject).subscribe({
+      next: (response) => {
         this.toastr.success('Your project has been edited successfully!');
         this.router.navigate(['/']);
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error(error);
         this.toastr.error(error.message);
-      }
-    );
+      },
+    });
   }
 
   editTask(form: NgForm) {
@@ -121,16 +141,16 @@ export class EditEntityComponent implements OnInit {
       id: this.id,
       projectId: value.projectId,
     };
-    this.taskService.editTask(updatedTask.id, updatedTask).subscribe(
-      (response) => {
+    this.taskService.editTask(updatedTask.id, updatedTask).subscribe({
+      next: (response) => {
         this.toastr.success('Your task has been edited successfully!');
         this.router.navigate(['/']);
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error(error);
         this.toastr.error(error.message);
-      }
-    );
+      },
+    });
   }
 
   onCancel() {

@@ -7,7 +7,6 @@ import { Project } from '../../projects/models/project.model';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskFormComponent } from 'src/app/tasks/task-form/task-form.component';
 import { ActivatedRoute } from '@angular/router';
 import { Task } from 'src/app/projects/models/task.model';
 import { Complexity } from 'src/app/shared/complexity.enum';
@@ -59,17 +58,6 @@ export class AddEntityComponent implements OnInit {
   fetchTasks() {
     this.taskService.getTasks().subscribe((tasks) => {
       this.tasks = tasks;
-    });
-  }
-  openAddTaskDialog(): void {
-    const dialogRef = this.dialog.open(TaskFormComponent, {
-      width: '250px',
-      data: { projectId: 'your-project-id' }, // pass the relevant project ID here
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      // You can do something with the result here if needed
     });
   }
 

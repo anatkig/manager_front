@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-// Import your Task service
 import { TaskService } from '../tasks.service';
 import { Task } from 'src/app/projects/models/task.model';
 

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ManageProjectsComponent } from './manage-projects.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ManageProjectsComponent', () => {
   let component: ManageProjectsComponent;
@@ -8,7 +9,9 @@ describe('ManageProjectsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ManageProjectsComponent]
+      imports: [HttpClientTestingModule],
+      declarations: [ManageProjectsComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
     fixture = TestBed.createComponent(ManageProjectsComponent);
     component = fixture.componentInstance;
