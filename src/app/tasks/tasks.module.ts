@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ManageTasksComponent } from './manage-tasks/manage-tasks.component';
-import { TaskFormComponent } from './task-form/task-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -14,7 +13,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { CommonComponentsModule } from '../common-components/common.module';
 
 @NgModule({
-  declarations: [ManageTasksComponent, TaskFormComponent],
+  declarations: [ManageTasksComponent],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -28,6 +27,5 @@ import { CommonComponentsModule } from '../common-components/common.module';
     AppRoutingModule,
     CommonComponentsModule,
   ],
-  exports: [TaskFormComponent],
 })
 export class TasksModule {}

@@ -84,9 +84,11 @@ export class TaskService {
 
   // Update a task
   editTask(id: string, task: Task): Observable<Task> {
-    return this.http
-      .put<Task>(`${this.apiURL}/${id}`, task)
-      .pipe(catchError(this.handleError));
+    return this.http.put<Task>(`${this.apiURL}/${id}`, task).pipe(
+      tap(() => {
+        this.forceUpdate = true;
+      })
+    );
   }
 
   // Delete a task

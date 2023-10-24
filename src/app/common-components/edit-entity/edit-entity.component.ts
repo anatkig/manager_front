@@ -144,7 +144,7 @@ export class EditEntityComponent implements OnInit {
     this.taskService.editTask(updatedTask.id, updatedTask).subscribe({
       next: (response) => {
         this.toastr.success('Your task has been edited successfully!');
-        this.router.navigate(['/']);
+        this.router.navigate(['/manage-tasks']);
       },
       error: (error) => {
         console.error(error);
